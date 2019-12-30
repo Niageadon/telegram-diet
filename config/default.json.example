@@ -1,0 +1,4 @@
+{
+    "port": 5000,
+    "monoUri": "mongodb+srv://admin:<password>@test-akp05.mongodb.net/app?retryWrites=true&w=majority"
+}
