@@ -4,7 +4,8 @@ const config = require('config');
 const mongoose = require('mongoose');
 const port = config.get('port') || 5000;
 
-app.use('api/auth', require('./routes/auth.routes'));
+app.use(express.json({ extended: true }));
+app.use('/api/auth', require('./routes/auth.routes'));
 async function start() {
 	try {
 		await mongoose.connect(config.get('monoUri'), {

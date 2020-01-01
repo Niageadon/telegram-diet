@@ -2,18 +2,22 @@ const { Router } = require('express');
 const bcrypt = require('bcryptjs');
 const { check, validationResult } = require('express-validator');
 const router = Router();
-const User = require('../models/User')
+const config = require('../config/default');
+const jwt = require('jsonwebtoken');
+const User = require('../models/User');
 
-// api/auth/registration
+// api/auth/register
 router.post(
-	'/registration',
+	'/register',
 	[
-		check('email', 'Email is not correct.'),
+		check('email', 'Email is not correct.')
+			.isEmail(),
 		check('password', 'Min length is 6.')
 			.isLength({ min: 6 })
 	],
 	async (req, resp) => {
-	try {
+		console.log(req.body)
+		try {
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
 			return resp.status(400).json({
@@ -67,7 +71,13 @@ router.post(
 			return resp.status(400).json({ message: 'Password is not correct' })
 		}
 
+		const token = jwt.sign(
+			{ userId: user.id},
+			config.get('jwtSecret'),
+			{ expiresIn: '1h' }
+		)
 
+		resp.json({ token, userId: user.id });
 
 	}
 	catch (e) {
