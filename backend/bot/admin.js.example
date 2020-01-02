@@ -1,0 +1,8 @@
+module.exports = (tokenId)()
+
+function tokenId() {
+	return {
+		tokenID:'101122121212',
+		adminId: 3741295211257,
+	}
+}

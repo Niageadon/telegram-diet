@@ -1,7 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {useHttp} from '../hooks/http.hook';
 import {useMessage} from '../hooks/message.hook';
+import {AuthContext} from '../context/auth.context';
 export const AuthPage = () => {
+	const auth = useContext(AuthContext);
 	const { loading, error, request, clearError } = useHttp();
 	const message = useMessage();
 	const [form, setForm] = useState({
@@ -13,8 +15,11 @@ export const AuthPage = () => {
 		message(error);
 		clearError()
 	}, [error, message, clearError]);
-
-
+	useEffect(() => {
+		if(window.M) {
+			window.M.updateTextFields();
+		}
+	}, []);
 
 	const changeHandler = event => {
 		setForm({ ...form, [event.target.name]: event.target.value })
@@ -32,7 +37,7 @@ export const AuthPage = () => {
 	const loginHandler = async () => {
 		try{
 			const data = await request('/api/auth/login', 'POST', {...form});
-			message(data.message);
+			auth.login(data.token, data.userId);
 		} catch (e) {
 			console.error(e.message)
 		}
@@ -56,7 +61,7 @@ export const AuthPage = () => {
 								onChange={changeHandler}
 								onKeyPress={event => {
 									if(event.key === 'Enter') {
-										registerHandler()
+										loginHandler()
 									}
 								}}
 							/>
@@ -73,7 +78,7 @@ export const AuthPage = () => {
 								value={form.password}
 								onKeyPress={event => {
 									if(event.key === 'Enter') {
-										registerHandler()
+										loginHandler()
 									}
 								}}
 								onChange={changeHandler}
