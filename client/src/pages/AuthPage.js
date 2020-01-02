@@ -1,11 +1,21 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useHttp} from '../hooks/http.hook';
+import {useMessage} from '../hooks/message.hook';
 export const AuthPage = () => {
-	const { loading, error, request } = useHttp();
+	const { loading, error, request, clearError } = useHttp();
+	const message = useMessage();
 	const [form, setForm] = useState({
 		email: '',
 		password: ''
 	});
+
+	useEffect(() => {
+		message(error);
+		clearError()
+	}, [error, message, clearError]);
+
+
+
 	const changeHandler = event => {
 		setForm({ ...form, [event.target.name]: event.target.value })
 	};
@@ -13,11 +23,20 @@ export const AuthPage = () => {
 	const registerHandler = async () => {
 		try{
 			const data = await request('/api/auth/register', 'POST', {...form});
-			 console.log(22, data);
+			message(data.message);
 		} catch (e) {
-
+			console.error(e.message)
 		}
-	}
+	};
+
+	const loginHandler = async () => {
+		try{
+			const data = await request('/api/auth/login', 'POST', {...form});
+			message(data.message);
+		} catch (e) {
+			console.error(e.message)
+		}
+	};
 
 	return (
 		<div className="row">
@@ -26,24 +45,55 @@ export const AuthPage = () => {
 				<div className="card blue darken-1">
 					<div className="card-content white-text">
 						<span className="card-title">Car tytle</span>
-						<div className="row">
-							<div className="input-field col s12">
-								<input onChange={changeHandler} id="email" type="email" className="validate white-text yellow-input"/>
-								<label htmlFor="email">email</label>
-							</div>
+						<div className="input-field">
+							<input
+								placeholder="Введите email"
+								id="email"
+								type="text"
+								name="email"
+								className="yellow-input"
+								value={form.email}
+								onChange={changeHandler}
+								onKeyPress={event => {
+									if(event.key === 'Enter') {
+										registerHandler()
+									}
+								}}
+							/>
+							<label htmlFor="email">Email</label>
 						</div>
-						<div className="row">
-							<div className="input-field col s12">
-								<input onChange={changeHandler} id="password" type="password" className="validate white-text yellow-input"/>
-								<label htmlFor="password">password</label>
-							</div>
+
+						<div className="input-field">
+							<input
+								placeholder="Введите пароль"
+								id="password"
+								type="password"
+								name="password"
+								className="yellow-input"
+								value={form.password}
+								onKeyPress={event => {
+									if(event.key === 'Enter') {
+										registerHandler()
+									}
+								}}
+								onChange={changeHandler}
+							/>
+							<label htmlFor="email">Пароль</label>
 						</div>
 					</div>
 
 					<div className="card-action">
-						<button disabled={loading} className="btn yellow darken-4" style={{marginRight: 16}}>Login</button>
+						<button disabled={loading}
+							className="btn yellow darken-4"
+						    style={{marginRight: 16}}
+							onClick={loginHandler}>
+							Login
+						</button>
 						<button onClick={registerHandler}
-						        disabled={loading} className="btn gray lighten-1 black-text">Registration</button>
+				            disabled={loading}
+			                className="btn gray lighten-1 black-text">
+							Registration
+						</button>
 					</div>
 				</div>
 			</div>
