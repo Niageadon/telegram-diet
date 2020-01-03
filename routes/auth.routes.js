@@ -5,6 +5,7 @@ const router = Router();
 const config = require('config');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const Diet = require('../models/Diet');
 
 // api/auth/register
 router.post(
@@ -54,6 +55,14 @@ router.post(
 	],
 	async (req, resp) => {
 	try {
+
+		const boba = new Diet({
+			product: "valer",
+			count: 22,
+			date: "12.15.20119"
+		});
+		await boba.save();
+
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
 			return resp.status(400).json({
