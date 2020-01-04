@@ -66,17 +66,15 @@ const start = (() => {
 		}
 
 
-
-
 		function validateText(text) {
 			if(text.includes(' ')) {
 				return { error: "Не используйте пробелы", product: '', count: 0 }
 			}
+
 			let [ product, count ] = text.split('-');
-			console.log(55, product, count);
 			if(!(product && count)) {
 				return { error: "Не втирай мне дичь", product, count }
-			} else if(!(count + 1)) {
+			} else if(isNaN(count + 1)) {
 				return { error: "Некорректно указано количество", product, count }
 			} else {
 				return { error: "", product, count }

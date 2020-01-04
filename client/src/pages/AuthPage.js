@@ -52,7 +52,7 @@ export const AuthPage = () => {
 						<span className="card-title">Car tytle</span>
 						<div className="input-field">
 							<input
-								placeholder="Введите email"
+								placeholder="Введите ваш telegram id"
 								id="email"
 								type="text"
 								name="email"
