@@ -2,10 +2,10 @@
 const { Schema, model, Types } = require('mongoose');
 
 const schema = Schema({
-	owner: { type: String, required: true },
-	product: { type: String, required: true },
-	count: { type: Number, required: true },
-	date: { type: String, required: true }
+	owner: { type: String, required: true, unique: false },
+	product: { type: String, required: true, unique: false },
+	count: { type: Number, required: true, unique: false },
+	date: { type: String, required: true, unique: false }
 });
 
 module.exports = model('diet', schema );

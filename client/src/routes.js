@@ -3,8 +3,10 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import { LinksPage } from './pages/LinksPage'
 import { CreatePage } from './pages/CreatePage';
 import { DetailPage } from './pages/DetailPage';
-import {AuthPage} from './pages/AuthPage';
+import { AuthPage } from './pages/AuthPage';
+import { MainPage } from './pages/MainPage';
 export const useRoutes = (isLogin) => {
+	console.log(isLogin)
 	if (isLogin) {
 		return (
 			<Switch>
@@ -20,17 +22,21 @@ export const useRoutes = (isLogin) => {
 					<DetailPage/>
 				</Route>
 
-				<Redirect to="/create"/>
+				<Route path="/">
+					<MainPage/>
+				</Route>
+
+				<Redirect to="/"/>
 			</Switch>
 		)
 	}
 	else {
 		return (
 			<Switch>
-				<Route path="/" exact>
+				<Route path="/login" exact>
 					<AuthPage/>
 				</Route>
-				<Redirect to="/"/>
+				<Redirect to="/login"/>
 			</Switch>
 		)
 	}

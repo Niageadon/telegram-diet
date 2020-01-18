@@ -56,11 +56,12 @@ const start = (() => {
 			else {
 				bot.sendMessage(message.from.id, "Данные сохранены");
 				const boba = new Diet({
+					date: new Date(),
 					product,
 					count,
-					date: new Date(),
 					owner: message.from.id
 				});
+				console.log(boba)
 				boba.save();
 			}
 		}

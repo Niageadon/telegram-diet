@@ -11,8 +11,8 @@ const Diet = require('../models/Diet');
 router.post(
 	'/register',
 	[
-		check('email', 'Email is not correct.')
-			.isEmail(),
+		check('telegramId', 'Enter your actual telegramId')
+			.exists(),
 		check('password', 'Min length is 6.')
 			.isLength({ min: 6 })
 	],
@@ -26,15 +26,15 @@ router.post(
 					message: 'Failed data validation.'
 				})
 			}
-			const { email, password } = req.body;
-			const newUser = await User.findOne({ email });
+			const { telegramId, password } = req.body;
+			const newUser = await User.findOne({ telegramId });
 			if(newUser) {
 				return resp.status(400).json({ message: 'User with this email is exist.'})
 			}
 			const hashedPassword = await bcrypt.hash(password, 12);
 
 			const user = new User({
-				email,
+				telegramId,
 				password: hashedPassword
 			});
 			await user.save();
@@ -48,20 +48,13 @@ router.post(
 router.post(
 	'/login',
 	[
-		check('email', 'Email is not correct.')
-			.normalizeEmail().isEmail(),
+		check('telegramId', 'Enter your actual telegramId')
+			.exists(),
 		check('password', 'Min length is 6.')
 			.isLength({ min: 6 }).exists()
 	],
 	async (req, resp) => {
 	try {
-
-		const boba = new Diet({
-			product: "valer",
-			count: 22,
-			date: "12.15.20119"
-		});
-		await boba.save();
 
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
@@ -70,8 +63,8 @@ router.post(
 				message: 'Failed data validation.'
 			})
 		}
-		const { email, password } = req.body;
-		const user = await User.findOne({ email });
+		const { telegramId, password } = req.body;
+		const user = await User.findOne({ telegramId });
 		if(!user) {
 			return resp(400).json({ message: 'User is not exist.' })
 		}

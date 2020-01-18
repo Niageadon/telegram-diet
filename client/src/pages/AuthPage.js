@@ -7,7 +7,7 @@ export const AuthPage = () => {
 	const { loading, error, request, clearError } = useHttp();
 	const message = useMessage();
 	const [form, setForm] = useState({
-		email: '',
+		telegramId: '',
 		password: ''
 	});
 
@@ -53,9 +53,9 @@ export const AuthPage = () => {
 						<div className="input-field">
 							<input
 								placeholder="Введите ваш telegram id"
-								id="email"
+								id="telegramId"
 								type="text"
-								name="email"
+								name="telegramId"
 								className="yellow-input"
 								value={form.email}
 								onChange={changeHandler}
@@ -65,7 +65,7 @@ export const AuthPage = () => {
 									}
 								}}
 							/>
-							<label htmlFor="email">Email</label>
+							<label htmlFor="telegramId">telegramId</label>
 						</div>
 
 						<div className="input-field">
